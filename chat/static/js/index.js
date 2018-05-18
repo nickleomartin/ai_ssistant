@@ -80,12 +80,12 @@ function fakeMessage() {
     counterpart_text = $("#"+i).text()
     console.log(counterpart_text)
     //Insert API call
-    $.get('http://localhost:5000/parse',{q:counterpart_text},
-      function(response){
-          console.log(response)
-              //Remove loading message
+    $.get('http://localhost:8000/chatbot',{q:counterpart_text},
+      function(result){
+          //Remove loading message
           $('.message.loading').remove();
-          $('<div class="message new"><figure class="avatar"><img src="" /></figure>' + Fake[i] + '</div>').appendTo($('.mCSB_container')).addClass('new');
+          // Append reponse
+          $('<div class="message new"><figure class="avatar"><img src="" /></figure>' + result.response + '</div>').appendTo($('.mCSB_container')).addClass('new');
           setDate();
           updateScrollbar();
           i++;
