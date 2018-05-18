@@ -29,7 +29,7 @@ function insertMessage() {
   if ($.trim(msg) == '') {
     return false;
   }
-  $('<div class="message message-personal">' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
+  $('<div id=' + i + ' class="message message-personal">' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
   setDate();
   $('.message-input').val(null);
   updateScrollbar();
@@ -75,11 +75,31 @@ function fakeMessage() {
   updateScrollbar();
 
   setTimeout(function() {
+
+    if(i != 0 ){
+    counterpart_text = $("#"+i).text()
+    console.log(counterpart_text)
+    //Insert API call
+    $.get('http://localhost:5000/parse',{q:counterpart_text},
+      function(response){
+          console.log(response)
+              //Remove loading message
+          $('.message.loading').remove();
+          $('<div class="message new"><figure class="avatar"><img src="" /></figure>' + Fake[i] + '</div>').appendTo($('.mCSB_container')).addClass('new');
+          setDate();
+          updateScrollbar();
+          i++;
+        })
+    }
+
+    else {
+    // Remove loading message
     $('.message.loading').remove();
     $('<div class="message new"><figure class="avatar"><img src="" /></figure>' + Fake[i] + '</div>').appendTo($('.mCSB_container')).addClass('new');
     setDate();
     updateScrollbar();
     i++;
+    }
   }, 1000 + (Math.random() * 20) * 100);
 
 }
